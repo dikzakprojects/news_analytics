@@ -10,6 +10,7 @@ soup = BeautifulSoup(response.text, 'html.parser')
 # headlines = soup.find('body').find_all('h3', class_ = 'gs-c-promo-heading__title')
 BBC = "BBC"
 
+#BBC Scraper
 def bbc_news_scraper():
     news_list = []
 
@@ -25,6 +26,5 @@ def bbc_news_scraper():
     df['scrape_time'] = datetime.now()
     df['source'] = BBC
     return df
-
 print(bbc_news_scraper())
 # See PyCharm help at https://www.jetbrains.com/help/pycharm/
