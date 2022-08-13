@@ -2,7 +2,6 @@ import requests
 from bs4 import BeautifulSoup
 import pandas as pd
 from datetime import datetime
-#checking for changes
 url='https://www.bbc.com/news'
 response = requests.get(url)
 
@@ -27,4 +26,3 @@ def bbc_news_scraper():
     df['source'] = BBC
     return df
 print(bbc_news_scraper())
-# See PyCharm help at https://www.jetbrains.com/help/pycharm/
