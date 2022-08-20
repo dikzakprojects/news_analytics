@@ -2,6 +2,8 @@ import requests
 from bs4 import BeautifulSoup
 import pandas as pd
 from datetime import datetime
+import numpy as np
+
 url='https://www.bbc.com/news'
 response = requests.get(url)
 
@@ -22,10 +24,19 @@ def bbc_news_scraper():
                 news_list.append(news_title)
 
     df=pd.DataFrame(news_list, columns=['headlines'])
-    df['scrape_time'] = datetime.now()
-    df['source'] = BBC
+    
+    headline_words = df['headlines'].str.lower().str.split()
+    words = pd.value_counts(np.array(headline_words))
+    
+    # df['scrape_time'] = datetime.now()
+    # df['source'] = BBC
+
+    print(headline_words)
+    
+
+
     # df_json = df.to_json(orient='index')
-    return df
+    # return df
 
 
 print(bbc_news_scraper())
