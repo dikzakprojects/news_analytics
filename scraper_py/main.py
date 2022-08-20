@@ -3,6 +3,7 @@ from bs4 import BeautifulSoup
 import pandas as pd
 from datetime import datetime
 import numpy as np
+import sys
 
 url='https://www.bbc.com/news'
 response = requests.get(url)
@@ -31,7 +32,8 @@ def bbc_news_scraper():
     #wrangle words to be ready for json output
     all_words = df['headlines'].explode().to_list()
     final_df =pd.DataFrame(all_words, columns=['word'])
-    final_df['scrape_datetime'] = datetime.now()
+    final_df['scrape_datetime'] = datetime.now().strftime("%Y-%m-%d %H:%M:%S") #"%d%m%Y"
+
     final_df['source'] = BBC
     final_df =final_df.to_json(orient="records")
 
