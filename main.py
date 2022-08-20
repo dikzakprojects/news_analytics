@@ -24,6 +24,8 @@ def bbc_news_scraper():
     df=pd.DataFrame(news_list, columns=['headlines'])
     df['scrape_time'] = datetime.now()
     df['source'] = BBC
-    df_json = df.to_json(orient='index')
-    return df_json
+    # df_json = df.to_json(orient='index')
+    return df
+
+
 print(bbc_news_scraper())
