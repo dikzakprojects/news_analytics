@@ -25,22 +25,18 @@ def bbc_news_scraper():
 
     df=pd.DataFrame(news_list, columns=['headlines'])
     
+    #split out words
     df['headlines'] = df['headlines'].str.lower().str.split()
-    all_words = df['headlines'].explode().to_list()
 
+    #wrangle words to be ready for json output
+    all_words = df['headlines'].explode().to_list()
     final_df =pd.DataFrame(all_words, columns=['word'])
-    # headline_words = df['headlines'].tolist()
-    # words = pd.value_counts(np.array(headline_words))
-    # words_ez = np.array(all_words)
-    
     final_df['scrape_datetime'] = datetime.now()
     final_df['source'] = BBC
-
-    # final_df =final_df.to_json('testfile,json', orient="split")
     final_df =final_df.to_json(orient="records")
 
-
     print(final_df)
+    return final_df
 
 
 bbc_news_scraper()
