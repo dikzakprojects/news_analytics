@@ -27,6 +27,6 @@ Api proxy
 
 **Payload**
 
-{"word":"more","scrape_datetime":1661018333004,"source":"BBC"}
+[{"word":"more","scrape_datetime":1661018333004,"source":"BBC"}]
 
 ---
