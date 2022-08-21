@@ -1,0 +1,13 @@
+syntax = "proto3";
+
+service Proxy {
+  rpc getScraperData(ScraperDataRequest) returns (ScraperResponse) {};
+}
+
+message ScraperDataRequest {
+  string url = 1;
+}
+
+message ScraperResponse {
+  repeated string data = 1;
+}
