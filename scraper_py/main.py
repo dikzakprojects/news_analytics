@@ -1,9 +1,19 @@
 import requests
-from bs4 import BeautifulSoup
-import pandas as pd
-from datetime import datetime
-import numpy as np
+import logging
 import sys
+import grpc
+import pandas as pd
+import numpy as np
+import json
+from types import SimpleNamespace
+from concurrent import futures
+from bs4 import BeautifulSoup
+from datetime import datetime
+
+from proto import news_pb2
+from proto import news_pb2_grpc
+
+from proto.news_pb2 import Analytics
 
 url='https://www.bbc.com/news'
 response = requests.get(url)
@@ -35,10 +45,32 @@ def bbc_news_scraper():
     final_df['scrape_datetime'] = datetime.now().strftime("%Y-%m-%d %H:%M:%S") #"%d%m%Y"
 
     final_df['source'] = BBC
-    final_df =final_df.to_json(orient="records")
+    final_df = final_df.to_json(orient="records")
 
-    print(final_df)
+    # print(final_df)
+    final_df = json.loads(final_df)
+    # x = Analytics(final_df[0])
+    # return news_pb2.ScraperResponse(data=final_df)
     return final_df
 
+# class Analytics(object):
+#     def __init__(self, obj):
+#         self.word = obj['word']
+#         self.scrape_datetime = obj['scrape_datetime']
+#         self.source = obj['source']
 
-bbc_news_scraper()
+class Scrape(news_pb2_grpc.ProxyServicer):
+    def getScraperData(self, request, context):
+        return news_pb2.ScraperResponse(data=bbc_news_scraper())
+
+def serve():
+  server = grpc.server(futures.ThreadPoolExecutor(max_workers=10))
+  news_pb2_grpc.add_ProxyServicer_to_server(
+      Scrape(), server)
+  server.add_insecure_port('[::]:50051')
+  server.start()
+  server.wait_for_termination()
+
+if __name__ == '__main__':
+    logging.basicConfig()
+    serve()
