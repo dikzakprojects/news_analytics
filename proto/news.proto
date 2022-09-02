@@ -1,0 +1,22 @@
+syntax = "proto3";
+option go_package = "../proxy_go/protos";
+
+service Proxy {
+  rpc getScraperData(ScraperDataRequest) returns (ScraperResponse) {};
+}
+
+message ScraperDataRequest {
+  string url = 1;
+}
+
+message ScraperResponse {
+  string data = 1;
+}
+
+message Analytics {
+  string word = 1;
+  string scrape_datetime = 2;
+  string source = 3;
+  optional string article_datetime = 4;
+  optional int32 count = 5;
+}
